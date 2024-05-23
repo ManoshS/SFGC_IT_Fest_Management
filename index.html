@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Fest Student Registrations</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .student-info {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">IT Fest Student Registrations</h1>
+        <div class="form-group">
+            <label for="eventSelect">Select Event:</label>
+            <select class="form-control" id="eventSelect">
+                <option value="">-- Select an Event --</option>
+                <option value="coding">Coding & Debugging</option>
+                <option value="gaming">Gaming</option>
+                <option value="quiz">IT Quiz</option>
+                
+                <!-- Options will be populated here -->
+            </select>
+        </div>
+        <div id="studentDetails" class="student-info">
+            <!-- Student details will be displayed here -->
+        </div><br>
+        <button class="btn btn-danger" onclick="deleteAll()"> DeleteAll</button>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
