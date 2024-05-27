@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const eventSelect = document.getElementById('eventSelect');
     const studentDetails = document.getElementById('studentDetails');
-
+    document.getElementById('loader').style.display = 'none';
 
 
     // Function to fetch and display student details
@@ -11,25 +11,39 @@ document.addEventListener('DOMContentLoaded', () => {
             const students = await response.json();
             studentDetails.innerHTML = '';
             console.log(students)
+
             traverseCheck(students, studentDetails, eventId)
+
         } catch (error) {
             studentDetails.innerHTML = "No entries Found"
             console.error('Error fetching student details:', error);
         }
+        document.getElementById('loader').style.display = 'none';
     }
 
     // Event listener for dropdown change
     eventSelect.addEventListener('change', () => {
+        document.getElementById('loader').style.display = "block";
         const eventId = eventSelect.value;
         if (eventId) {
             fetchStudentDetails(eventId);
         } else {
             studentDetails.innerHTML = '';
         }
+
     });
 
 
 });
+
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+
 
 function traverseCheck(data, studentDetails, eventId) {
 
@@ -51,6 +65,7 @@ function traverseCheck(data, studentDetails, eventId) {
                 traverseCheck(data[info], studentDetails, eventId);
 
 
+
             } else {
                 let content = document.createElement("div");
                 content.innerHTML = `<p class="card-title"> ${info} :${data[info]}</p>`
@@ -62,6 +77,7 @@ function traverseCheck(data, studentDetails, eventId) {
             }
 
     }
+
     if (i === 1) {
         let accept = document.createElement("button");
         accept.className = "btn btn-success";
@@ -81,6 +97,7 @@ function traverseCheck(data, studentDetails, eventId) {
             deleteB.style.display = "none"
         }
         deleteB.onclick = () => {
+            document.getElementById('loader').style.display = "block";
             card.style.display = "none"
 
 
@@ -97,11 +114,12 @@ function traverseCheck(data, studentDetails, eventId) {
                 .then(data => {
                     console.log(card.dataset.data);
                     delete data[card.dataset.data]
-
+                    const csrfToken = getCookie('csrf_token');
                     fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json'
+                            'Content-Type': 'application/json',
+                            'X-CSRF-Token': csrfToken
                         },
                         body: JSON.stringify(data)
                     })
@@ -124,11 +142,14 @@ function traverseCheck(data, studentDetails, eventId) {
 
                     console.error("There is Error in GET", error);
                 })
+            document.getElementById('loader').style.display = "none";
         }
     }
 }
+
+
 function deleteAll() {
-    const eventSelect = document.getElementById('eventSelect'); 
+    const eventSelect = document.getElementById('eventSelect');
     const eventId = eventSelect.value;
     studentDetails.style.display = "none"
     fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`, {
