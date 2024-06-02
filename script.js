@@ -79,23 +79,25 @@ function traverseCheck(data, studentDetails, eventId) {
     }
 
     if (i === 1) {
-        let accept = document.createElement("button");
-        accept.className = "btn btn-success";
-        accept.innerHTML = "Accept"
-        accept.style.width = "100px"
+        // let accept = document.createElement("button");
+        // accept.className = "btn btn-success";
+        // accept.innerHTML = "Accept"
+        // accept.style.width = "100px"
 
 
-        card.appendChild(accept)
+        // card.appendChild(accept)
+
+
         let deleteB = document.createElement("button");
         deleteB.className = "btn btn-danger";
         deleteB.innerHTML = "Reject"
         deleteB.style.width = "100px"
 
         card.appendChild(deleteB)
-        accept.onclick = () => {
-            accept.style.display = "none"
-            deleteB.style.display = "none"
-        }
+        // accept.onclick = () => {
+        //     accept.style.display = "none"
+        //     deleteB.style.display = "none"
+        // }
         deleteB.onclick = () => {
             document.getElementById('loader').style.display = "block";
             card.style.display = "none"
