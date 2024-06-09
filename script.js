@@ -123,52 +123,56 @@ function traverseCheck(data, studentDetails, eventId) {
     if (i === 1) {
 
         deleteB.onclick = () => {
-            document.getElementById('loader').style.display = "block";
-            newRow.style.display = "none"
+            let ch = window.confirm("DO you want to delete this record")
+            if (ch) {
+                document.getElementById('loader').style.display = "block";
+                newRow.style.display = "none"
 
 
 
-            fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`)
-                .then(response => {
+                fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`)
+                    .then(response => {
 
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok ' + response.statusText);
+                        }
 
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(newRow.dataset.data);
-                    delete data[newRow.dataset.data]
-                    const csrfToken = getCookie('csrf_token');
-                    fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-Token': csrfToken
-                        },
-                        body: JSON.stringify(data)
+                        return response.json();
                     })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok ' + response.statusText);
-                            }
-                            return response.json();
+                    .then(data => {
+                        console.log(newRow.dataset.data);
+                        delete data[newRow.dataset.data]
+                        const csrfToken = getCookie('csrf_token');
+                        fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-Token': csrfToken
+                            },
+                            body: JSON.stringify(data)
                         })
-                        .then(data => {
-                            console.log('Data:', data);
-                        })
-                        .catch(error => {
-                            console.error('There has been a problem with your fetch operation in PUT:', error);
-                        });
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok ' + response.statusText);
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                console.log('Data:', data);
+                            })
+                            .catch(error => {
+                                console.error('There has been a problem with your fetch operation in PUT:', error);
+                            });
 
 
 
-                }).catch(error => {
+                    }).catch(error => {
 
-                    console.error("There is Error in GET", error);
-                })
-            document.getElementById('loader').style.display = "none";
+                        console.error("There is Error in GET", error);
+                    })
+                document.getElementById('loader').style.display = "none";
+            }
+
         }
     }
 }
@@ -180,32 +184,35 @@ function deleteRow(rowIndex) {
 }
 
 function deleteAll() {
-    const eventSelect = document.getElementById('eventSelect');
-    const eventId = eventSelect.value;
+    let ch = window.confirm("DO you want to delete all record")
+    if (ch) {
+        const eventSelect = document.getElementById('eventSelect');
+        const eventId = eventSelect.value;
 
-    const table = document.getElementById('studentDetails');
-    const tbody = table.getElementsByTagName('tbody')[0];
+        const table = document.getElementById('studentDetails');
+        const tbody = table.getElementsByTagName('tbody')[0];
 
-    if (tbody) {
-        while (tbody.rows.length > 1) {
-            tbody.deleteRow(tbody.rows.length - 1);
-        }
-    }
-    fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
+        if (tbody) {
+            while (tbody.rows.length > 1) {
+                tbody.deleteRow(tbody.rows.length - 1);
             }
-
-            return response.json();
+        }
+        fetch(`https://getpantry.cloud/apiv1/pantry/1c4f9119-32de-4766-af1f-01141acb4e6d/basket/${eventId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
-        .then(data => { }).catch(error => { console.log(error) });
+            .then(response => {
 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+
+                return response.json();
+            })
+            .then(data => { }).catch(error => { console.log(error) });
+
+    }
 }
 
