@@ -184,7 +184,7 @@ function deleteRow(rowIndex) {
 }
 
 function deleteAll() {
-    let ch = window.confirm("DO you want to delete all record")
+    let ch = window.confirm("DO you want to delete all records")
     if (ch) {
         const eventSelect = document.getElementById('eventSelect');
         const eventId = eventSelect.value;
